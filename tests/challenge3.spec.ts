@@ -1,11 +1,11 @@
+import { report } from 'process';
 import { test, expect } from '../helpers/test-helper.ts';
 
 test('Check the tax calculation for custom income', async ({ page, photoBoothPage, reportPage }) => {
   await test.step('Open report page', async () => {
-    //TODO: move it to the .env file
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await photoBoothPage.navMenu.openPage('Report');
-  })
+  });
   await test.step('Enter custom income', async () => {
     await reportPage.customIncomeCheckbox.check();
     const customIncomePromise = page.waitForResponse('**/report*');
@@ -22,9 +22,41 @@ test('Check the tax calculation for custom income', async ({ page, photoBoothPag
 
     expect(test.info().errors).toHaveLength(0);
   });
-
-  test.fixme('Tax info updated after user makes an order', async () => { });
-
-  test.fixme('User can download the report', async () => { });
-  test.fixme('User can download the report for custom income', async () => { });
 });
+
+test('Tax info updated after user makes an order', async ({ page, productPage, photoBoothPage, context, request, reportPage }) => {
+  let reportData;
+
+  await test.step('Request report data before the order', async () => {
+    //TODO: make the search parameters configurable
+    const response = await request.get('http://localhost:3000/report', { params: { month: 1, year: 2025 } });
+    reportData = await response.json();
+  });
+
+  await test.step('Make a purchase', async () => {
+    await context.grantPermissions(['camera']);
+    await page.goto('/');
+
+    const productResponse = page.waitForResponse('**/products');
+    await photoBoothPage.takePhotoAndProceedButton.click();
+    await productResponse;
+
+    await productPage.fourBySixProduct.click();
+    await productPage.payButton.click();
+  });
+
+  await test.step('Compare report data before and after the order', async () => {
+    await productPage.navMenu.openPage('Report');
+    //TODO: male a sum conversion
+    expect.soft(await reportPage.getReportFieldData('Taxes to pay')).not.toBe(reportData.taxesToPay);
+    expect.soft(await reportPage.getReportFieldData('Total income')).not.toBe(reportData.totalIncome);
+    expect.soft(await reportPage.getReportFieldData('Total gifted in lottery')).toBe(1);
+    expect.soft(await reportPage.getReportFieldData('Orders made')).toBe(reportData.ordersMade + 1);
+    expect.soft(await reportPage.getReportFieldData('Prints done')).toBe(reportData.printsDone + 1);
+
+    expect(test.info().errors).toHaveLength(0);
+  });
+});
+
+test.fixme('User can download the report', async () => { });
+test.fixme('User can download the report for custom income', async () => { });
