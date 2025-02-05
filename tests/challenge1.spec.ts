@@ -18,7 +18,7 @@ const textInputs = [
 ];
 
 textInputs.forEach(({ caseName, text, inputMessage }) => {
-  test(`User can input ${caseName}`, async ({ photoBoothPage, page }) => {
+  test(`User can input ${caseName}`, async ({ photoBoothPage }) => {
     await photoBoothPage.textOnScreenInput.fill(text);
     await expect(photoBoothPage.textOnScreenAlert).toHaveText(inputMessage);
   })
