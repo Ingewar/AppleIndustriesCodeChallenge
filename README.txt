@@ -10,7 +10,7 @@ and run the following command to load the image into Docker:
     docker load -i apple-ind-test-assignment.tar
 
 3. Run the Docker Container
-    docker run -p 3000:3000 -p 5173:5173 apple-ind-test-assignmentdock
+    docker run -p 3000:3000 -p 5173:5173 apple-ind-test-assignment
 
 4. Verify Application Accessibility
 Once the container is running, verify that the application is accessible:
