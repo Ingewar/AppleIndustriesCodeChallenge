@@ -9,7 +9,7 @@ test.beforeEach(async ({ page, context }) => {
   })
 });
 
-test('User get free product', async ({ photoBoothPage, productPage, page }) => {
+test('User get two free products with disabled timer', async ({ photoBoothPage, productPage, page }) => {
   await test.step('Take a photo and proceed with a default text', async () => {
     const productResponse = page.waitForResponse('**/products');
     await photoBoothPage.takePhotoAndProceedButton.click();
@@ -20,6 +20,19 @@ test('User get free product', async ({ photoBoothPage, productPage, page }) => {
   })
   await test.step('Select a 4*6 product', async () => {
     await productPage.fourBySixProduct.click();
-    await productPage.payButton.click();
   })
+
+  await test.step('Verify that Congrats alert is visible', async () => {
+    await expect(productPage.congratsAlert).toBeVisible({ timeout: 3000 });
+  });
+
+  await test.step('Verify that price is right', async () => {
+    await productPage.totalPrice.scrollIntoViewIfNeeded()
+    await expect(productPage.totalPrice).toHaveText('Total: $5.00');
+  });
+
+  await test.step('Verify that all other then selected product are added as free', async () => {
+    // It's hihly important to add proper test-id attributes each price element
+    // otherwise it would be an ugly and fragile test
+  });
 });
