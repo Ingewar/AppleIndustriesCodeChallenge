@@ -1,4 +1,4 @@
-## Application run guide
+# Application run guide
 
 The following instructions will walk you through the steps to set up and run the test application using Docker.
 
