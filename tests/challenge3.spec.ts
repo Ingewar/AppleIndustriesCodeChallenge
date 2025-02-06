@@ -34,7 +34,7 @@ test('Tax info updated after user makes an order', async ({ page, productPage, p
   const currentYear = new Date().getFullYear();
 
   await test.step('Request report data before the order', async () => {
-    const response = await request.get('http://localhost:3000/report', { params: { month: currentMonth, year: currentYear } });
+    const response = await request.get(`${process.env.API_URL}/report`, { params: { month: currentMonth, year: currentYear } });
     reportData = await response.json();
   });
 

@@ -2,7 +2,7 @@ import { test, expect } from '../helpers/test-helper.ts';
 
 test.beforeEach(async ({ page, context }) => {
   await context.grantPermissions(['camera']);
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
 });
 
 test('"Text on screen" is reverced in Admin panel', async ({ photoBoothPage }) => {

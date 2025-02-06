@@ -5,7 +5,7 @@ test.beforeEach(async ({ page, context }) => {
     await context.grantPermissions(['camera']);
   });
   await test.step('Open Photo Booth page', async () => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
   })
 });
 
