@@ -1,4 +1,5 @@
 import { numberToDollarString } from '../helpers/converter.ts';
+import { reportCSVToJson } from '../helpers/csvReader.ts';
 import { test, expect } from '../helpers/test-helper.ts';
 import { ReportAPIResponse } from '../types/api/report.ts';
 
@@ -63,5 +64,46 @@ test('Tax info updated after user makes an order', async ({ page, productPage, p
   });
 });
 
-test.fixme('User can download the report', async () => { });
-test.fixme('User can download the report for custom income', async () => { });
+test('Data in downloaded report is the same as from the API', async ({ page, productPage, photoBoothPage, context, request, reportPage }) => {
+  let reportData: ReportAPIResponse;
+  const productPrice = 500;
+
+  //FIXME: notice that month index in the app is 0-based, which might be confusing
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  await test.step('Make a purchase', async () => {
+    await context.grantPermissions(['camera']);
+    await page.goto('/');
+
+    const productResponse = page.waitForResponse('**/products');
+    await photoBoothPage.takePhotoAndProceedButton.click();
+    await productResponse;
+
+    await productPage.fourBySixProduct.click();
+    await productPage.payButton.click();
+  });
+
+  await test.step('Download report file', async () => {
+    await productPage.navMenu.openPage('Report');
+
+    const downloadPromise = page.waitForEvent('download');
+    await reportPage.saveReportButton.click();
+    const download = await downloadPromise;
+
+    await download.saveAs('./temp/report.csv');
+  });
+
+  await test.step('Request report data after the order', async () => {
+    const response = await request.get(`${process.env.API_URL}/report`, { params: { month: currentMonth, year: currentYear } });
+    reportData = await response.json();
+  });
+
+  await test.step('Check the downloaded report', async () => {
+    const jsonData = await reportCSVToJson('./temp/report.csv');
+
+    expect(jsonData).toMatchObject(reportData);
+  });
+});
+
+test.fixme('Data in downloaded report is correspond with the UI data for custom income', async () => { });

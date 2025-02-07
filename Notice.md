@@ -7,3 +7,4 @@
 1. Month index 0-based in querry params for the /report API call
 1. Sometimes (I was undable effectevly localise the issue) free products doesn't provided after set timeout to zero
 1. Project does require propar accessibility and test attributes
+1. Downloaded csv file doesn't have a header row
