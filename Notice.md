@@ -11,6 +11,7 @@
 
 ## Postman
 
-As a demonstration I also added 8 checks for just one request in the postman. You can check it by importing
-a postman collection from `./challenge-materials/Server API with Tests.postman_collection.json` and open
-Get Products => Scripts => Post response tab.
+As a demonstration, I also added 8 checks for just one request in Postman. You can check it by importing
+a Postman collection from `./challenge-materials/Server API with Tests.postman_collection.json` and opening
+Get Products => Tests => Post-response tab. This will give you an idea of how test verifications can be organized
+in one place. However, this approach has its own limitations.
