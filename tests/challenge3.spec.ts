@@ -14,6 +14,8 @@ test('Check the tax calculation for custom income', async ({ page, photoBoothPag
     await reportPage.incomeInput.fill('5');
     await customIncomePromise;
   });
+
+  // I add static values for this case, since we can decide what value we entering and simple numbers are easier to understand and maintain
   await test.step('Check the tax calculation', async () => {
     expect.soft(await reportPage.getReportFieldData('Taxes to pay')).toBe('$0.43');
     expect.soft(await reportPage.getReportFieldData('Total income')).toBe('$5.00');
