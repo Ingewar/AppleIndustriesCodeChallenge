@@ -6,9 +6,11 @@ test.beforeEach(async ({ page, context }) => {
 });
 
 test('"Text on screen" is reverced in Admin panel', async ({ photoBoothPage }) => {
-  await photoBoothPage.textOnScreenInput.fill('Text on screen');
+  const text = 'Text on screen';
+  const reversedText = text.split('').reverse().join('');
+  await photoBoothPage.textOnScreenInput.fill(text);
 
-  await expect(photoBoothPage.reversedTextAdminPanel).toHaveText('neercs no txeT');
+  await expect(photoBoothPage.reversedTextAdminPanel).toHaveText(reversedText);
 });
 
 const textInputs = [
