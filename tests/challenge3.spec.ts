@@ -1,3 +1,4 @@
+import { report } from 'process';
 import { numberToDollarString } from '../helpers/converter.ts';
 import { reportCSVToJson } from '../helpers/csvReader.ts';
 import { test, expect } from '../helpers/test-helper.ts';
@@ -31,6 +32,7 @@ test('Check the tax calculation for custom income', async ({ page, photoBoothPag
 test('Tax info updated after user makes an order', async ({ page, productPage, photoBoothPage, context, request, reportPage }) => {
   let reportData: ReportAPIResponse;
   const productPrice = 500;
+  const taxes = 8.625;
 
   //FIXME: notice that month index in the app is 0-based, which might be confusing
   const currentMonth = new Date().getMonth();
@@ -55,12 +57,16 @@ test('Tax info updated after user makes an order', async ({ page, productPage, p
 
   await test.step('Compare report data before and after the order', async () => {
     await productPage.navMenu.openPage('Report');
+    const income = reportData.totalIncome + productPrice;
+    const expectedTaxes = (income * (taxes / 100));
+    const expectedRevenue = (income - expectedTaxes);
 
-    expect.soft(await reportPage.getReportFieldData('Total income')).toEqual(numberToDollarString(reportData.totalIncome + productPrice));
+    // Here I add example of cheking dynamic values, since we can't predict the exact value of the income
+    expect.soft(await reportPage.getReportFieldData('Total income')).toEqual(numberToDollarString(income));
+    expect.soft(await reportPage.getReportFieldData('Taxes to pay')).toEqual(numberToDollarString(expectedTaxes));
+    expect.soft(await reportPage.getReportFieldData('Revenue')).toEqual(numberToDollarString(expectedRevenue));
     expect.soft(await reportPage.getReportFieldData('Orders made')).toBe((reportData.ordersMade + 1).toString());
     expect.soft(await reportPage.getReportFieldData('Prints done')).toBe((reportData.printsDone + 1).toString());
-
-    //TODO: other fields are also important to check but due to time limitations, I will skip them for now
 
     expect(test.info().errors).toHaveLength(0);
   });
