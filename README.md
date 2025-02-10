@@ -29,23 +29,26 @@ The following instructions will walk you through the steps to set up and run the
 1. Set up Environment Variables
    Before running the tests, you need to set up the environment variables. You can do this by renaming the `.env.example` file to `.env` and updating the variables as needed: - Rename the file:
    `sh
-    mv .env.example .env
-    ` - Open the [.env](http://_vscodecontentref_/1) file and update the variables with your specific values. Alternatively, you can specify the environment variables directly in the CLI command:
+mv .env.example .env
+` - Open the [.env](http://_vscodecontentref_/1) file and update the variables with your specific values. Alternatively, you can specify the environment variables directly in the CLI command:
    `sh
-    API_URL=http://localhost:3000 npx playwright test
-    `
+API_URL=http://localhost:3000 npx playwright test
+`
 
 1. Run Playwright Tests
    Ensure you have Node.js installed on your machine. If not, download and install it from the official Node.js website. - Navigate to the project directory and install the dependencies:
    `sh
-    npm install
-    ` - Run the Playwright tests using the following command:
-   `sh
-    npx playwright test
-    ` - The test results will be displayed in the terminal. You can also generate an HTML report by running:
-   `sh
-    npx playwright show-report
-    `
+npm install
+`
+
+   - Run the Playwright tests using the following command:
+     `sh
+npx playwright test
+`
+   - The test results will be displayed in the terminal. You can also generate an HTML report by running:
+     `sh
+npx playwright show-report
+`
 
 1. Install VS Code Extension for Playwright (if you use one)
    To simplify running Playwright tests, you can install the Playwright Test for VS Code extension:
