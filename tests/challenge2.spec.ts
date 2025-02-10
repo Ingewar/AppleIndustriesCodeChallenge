@@ -1,20 +1,9 @@
 import { test, expect } from '../helpers/test-helper.ts';
 
-test.beforeEach(async ({ page, context }) => {
-  await test.step('Enable camera permissions', async () => {
-    await context.grantPermissions(['camera']);
+test('User get two free products with disabled timer', async ({ productPage }) => {
+  await test.step('Open products page', async () => {
+    await productPage.openPage();
   });
-  await test.step('Open Photo Booth page', async () => {
-    await page.goto('/');
-  })
-});
-
-test('User get two free products with disabled timer', async ({ photoBoothPage, productPage, page }) => {
-  await test.step('Take a photo and proceed with a default text', async () => {
-    const productResponse = page.waitForResponse('**/products');
-    await photoBoothPage.takePhotoAndProceedButton.click();
-    await productResponse;
-  })
   await test.step('Enable price for each purchase', async () => {
     await productPage.setPriceTimeout('Ain\'t nobody got time for that (once per order)');
   })

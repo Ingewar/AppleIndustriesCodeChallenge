@@ -7,7 +7,7 @@ The following instructions will walk you through the steps to set up and run the
    If Docker is not installed, download it from Docker's official website and follow the installation instructions.
 
 1. Load the Docker Image
-   Download file by this link - https://drive.google.com/file/d/1XUUiK7BEqRq9bqPAmrJSwwiYSx0-ytuJ/view?usp=share_link
+   Download file by this link - <https://drive.google.com/file/d/1XUUiK7BEqRq9bqPAmrJSwwiYSx0-ytuJ/view?usp=share_link>
    Navigate to the directory containing the Docker image file (apple-ind-test-assignment.tar)
    and run the following command to load the image into Docker:
    docker load -i apple-ind-test-assignment.tar
@@ -17,8 +17,8 @@ The following instructions will walk you through the steps to set up and run the
 
 1. Verify Application Accessibility
    Once the container is running, verify that the application is accessible:
-   Frontend: http://localhost:5173
-   Server API: http://localhost:3000/products
+   Frontend: <http://localhost:5173>
+   Server API: <http://localhost:3000/products>
 
 1. Examine the Server API
    To explore the server API, open the Postman application. Navigate to My Workspace -> Import.
@@ -43,7 +43,7 @@ npm install
 
    - Run the Playwright tests using the following command:
      `sh
-npx playwright test
+npm test
 `
    - The test results will be displayed in the terminal. You can also generate an HTML report by running:
      `sh

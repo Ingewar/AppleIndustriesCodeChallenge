@@ -1,4 +1,3 @@
-import { report } from 'process';
 import { numberToDollarString } from '../helpers/converter.ts';
 import { reportCSVToJson } from '../helpers/csvReader.ts';
 import { test, expect } from '../helpers/test-helper.ts';
@@ -6,7 +5,7 @@ import { ReportAPIResponse } from '../types/api/report.ts';
 
 test('Check the tax calculation for custom income', async ({ page, photoBoothPage, reportPage }) => {
   await test.step('Open report page', async () => {
-    await page.goto('/');
+    await photoBoothPage.openPage();
     await photoBoothPage.navMenu.openPage('Report');
   });
   await test.step('Enter custom income', async () => {
@@ -29,7 +28,7 @@ test('Check the tax calculation for custom income', async ({ page, photoBoothPag
   });
 });
 
-test('Tax info updated after user makes an order', async ({ page, productPage, photoBoothPage, context, request, reportPage }) => {
+test('Tax info updated after user makes an order', async ({ page, productPage, request, reportPage }) => {
   let reportData: ReportAPIResponse;
   const productPrice = 500;
   const taxes = 8.625;
@@ -43,16 +42,12 @@ test('Tax info updated after user makes an order', async ({ page, productPage, p
     reportData = await response.json();
   });
 
-  await test.step('Make a purchase', async () => {
-    await context.grantPermissions(['camera']);
-    await page.goto('/');
-
-    const productResponse = page.waitForResponse('**/products');
-    await photoBoothPage.takePhotoAndProceedButton.click();
-    await productResponse;
-
+  await test.step('Make an order', async () => {
+    await productPage.openPage();
     await productPage.fourBySixProduct.click();
+    const orderResponse = page.waitForResponse('**/order');
     await productPage.payButton.click();
+    await orderResponse;
   });
 
   await test.step('Compare report data before and after the order', async () => {
@@ -80,16 +75,12 @@ test('Data in downloaded report is the same as from the API', async ({ page, pro
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
 
-  await test.step('Make a purchase', async () => {
-    await context.grantPermissions(['camera']);
-    await page.goto('/');
-
-    const productResponse = page.waitForResponse('**/products');
-    await photoBoothPage.takePhotoAndProceedButton.click();
-    await productResponse;
-
+  await test.step('Make an order', async () => {
+    await productPage.openPage();
     await productPage.fourBySixProduct.click();
+    const orderResponse = page.waitForResponse('**/order');
     await productPage.payButton.click();
+    await orderResponse;
   });
 
   await test.step('Download report file', async () => {

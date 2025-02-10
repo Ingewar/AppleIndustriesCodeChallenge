@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "description": "The following instructions will walk you through the steps to set up and run the test application using Docker.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.1"
+    "@types/node": "^22.13.1",
+    "csv-parser": "^3.2.0"
   },
   "dependencies": {
-    "csv-parser": "^3.2.0",
     "dotenv": "^16.4.7"
   }
 }
